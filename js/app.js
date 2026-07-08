@@ -24,6 +24,22 @@
     6: [[8 * 60 + 30, 17 * 60]]     // samedi
   };
 
+  var DAY_NAMES = ["Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"];
+
+  function formatMinutes(m) {
+    var h = Math.floor(m / 60);
+    var mm = m % 60;
+    return h + "h" + (mm ? (mm < 10 ? "0" + mm : mm) : "00");
+  }
+
+  function formatDayHours(day) {
+    var slots = HOURS[day] || [];
+    if (!slots.length) return "Fermé aujourd'hui";
+    return slots.map(function (s) {
+      return formatMinutes(s[0]) + " – " + formatMinutes(s[1]);
+    }).join(" / ");
+  }
+
   function nowInZurich() {
     // Calcule l'heure locale de Delémont (Europe/Zurich) quel que soit
     // le fuseau horaire de l'appareil du visiteur.
@@ -80,6 +96,25 @@
     } catch (e) { /* silencieux */ }
   }
 
+  function initTodayCard() {
+    var dayEl = document.getElementById("todayDayName");
+    var hoursEl = document.getElementById("todayHoursText");
+    var pill = document.getElementById("todayStatusPill");
+    var statusText = document.getElementById("todayStatusText");
+    if (!dayEl || !hoursEl || !pill || !statusText) return;
+    try {
+      var t = nowInZurich();
+      dayEl.textContent = DAY_NAMES[t.day];
+      hoursEl.textContent = formatDayHours(t.day);
+      var s = computeStatus();
+      pill.classList.add(s.open ? "is-open" : "is-closed");
+      statusText.textContent = s.open ? "Ouvert maintenant" : "Fermé actuellement";
+    } catch (e) {
+      dayEl.textContent = "Horaires";
+      hoursEl.textContent = "Voir le tableau ci-contre";
+    }
+  }
+
   /* =========================================================
      Header : ombre au scroll
   ========================================================= */
@@ -118,6 +153,7 @@
   function initBooking() {
     var serviceWrap = document.getElementById("serviceOptions");
     var barberWrap = document.getElementById("barberOptions");
+    var nameInput = document.getElementById("clientName");
     var prefInput = document.getElementById("prefTime");
     var summary = document.getElementById("summaryText");
     var sendBtn = document.getElementById("waSendBtn");
@@ -166,6 +202,9 @@
       update();
     });
 
+    if (nameInput) {
+      nameInput.addEventListener("input", update);
+    }
     if (prefInput) {
       prefInput.addEventListener("input", update);
     }
@@ -176,17 +215,21 @@
 
     function update() {
       var barber = getBarber();
-      if (!state.service || !barber) {
-        summary.textContent = "Sélectionnez une prestation et un barbier pour continuer.";
+      var name = nameInput && nameInput.value.trim();
+
+      if (!state.service || !barber || !name) {
+        summary.textContent = !name && state.service && barber
+          ? "Indiquez votre prénom et nom pour continuer."
+          : "Sélectionnez une prestation et un barbier, puis indiquez votre nom.";
         sendBtn.classList.add("btn--disabled");
         sendBtn.setAttribute("aria-disabled", "true");
-        sendBtn.removeAttribute("href_ready");
         return;
       }
 
       var pref = prefInput && prefInput.value.trim();
       var lines = [
         "Bonjour Barber King 👋",
+        "Je m'appelle " + name + ".",
         "Je souhaite réserver : " + state.service,
         "Barbier souhaité : " + barber.name
       ];
@@ -201,7 +244,7 @@
       sendBtn.setAttribute("rel", "noopener");
       sendBtn.classList.remove("btn--disabled");
       sendBtn.removeAttribute("aria-disabled");
-      summary.textContent = state.service + " avec " + barber.name + (pref ? " — " + pref : "") + ". Prêt à envoyer sur WhatsApp.";
+      summary.textContent = name + " — " + state.service + " avec " + barber.name + (pref ? " — " + pref : "") + ". Prêt à envoyer sur WhatsApp.";
     }
 
     update();
@@ -233,6 +276,7 @@
   document.addEventListener("DOMContentLoaded", function () {
     initStatus();
     highlightToday();
+    initTodayCard();
     initHeaderScroll();
     initNavToggle();
     initBooking();
