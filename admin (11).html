@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Espace pro — Barber King</title>
+<meta name="robots" content="noindex, nofollow">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/style.css?v=4">
+<style>
+  body{ background: var(--paper); min-height: 100vh; }
+  .admin-wrap{ max-width: 1400px; margin: 0 auto; padding: 32px 24px 80px; }
+  .admin-header{ display:flex; align-items:center; justify-content:space-between; margin-bottom: 28px; flex-wrap: wrap; gap: 12px; }
+  .admin-header h1{ font-size: 1.5rem; }
+  #loginPanel{ max-width: 360px; margin: 80px auto; text-align:center; }
+  #loginPanel .field{ width:100%; margin-bottom:16px; }
+  #loginError{ color: var(--red); font-size:.9rem; min-height:1.2em; margin-top:8px; }
+
+  .block-form{ display:flex; flex-wrap:wrap; gap:10px; align-items:flex-end; background:var(--white); border:1px solid rgba(23,20,15,.08); border-radius:var(--radius); padding:18px; margin-bottom:28px; }
+  .block-form label{ font-size:.78rem; color:var(--grey); display:block; margin-bottom:4px; }
+  .block-form input{ padding:9px 12px; border-radius:var(--radius); border:1.5px solid rgba(23,20,15,.15); font-family: var(--font-body); }
+  section.panel{ margin-bottom: 36px; }
+  section.panel h2.section-title{ font-family: var(--font-display); text-transform:uppercase; font-size:1.15rem; margin-bottom:14px; }
+
+  /* --- Planning visuel --- */
+  .planning-nav{ display:flex; align-items:center; gap:12px; margin-bottom:16px; }
+  .planning-nav button{
+    background: var(--white); border:1px solid rgba(23,20,15,.15); border-radius: var(--radius);
+    width:34px; height:34px; cursor:pointer; font-size:1.1rem; line-height:1;
+  }
+  .planning-nav .today-btn{ width:auto; padding:0 16px; font-size:.85rem; font-weight:600; }
+  .planning-nav .day-label{ font-family: var(--font-display); text-transform:uppercase; letter-spacing:.02em; font-size:1.05rem; }
+
+  .planning-scroll{ overflow-x:auto; background:var(--white); border:1px solid rgba(23,20,15,.08); border-radius: var(--radius); }
+  .planning-grid{ display:flex; min-width:100%; width:max-content; }
+  .planning-gutter{ width:52px; flex-shrink:0; position:relative; border-right:1px solid rgba(23,20,15,.08); }
+  .planning-gutter__label{ position:absolute; right:8px; transform:translateY(-50%); font-size:.72rem; color:var(--grey); }
+  .planning-col{ width:200px; flex-shrink:0; border-right:1px solid rgba(23,20,15,.08); }
+  .planning-col:last-child{ border-right:none; }
+  .planning-col__header{
+    position:sticky; top:0; background:var(--white); z-index:2;
+    padding:12px 10px; text-align:center; font-family: var(--font-display);
+    text-transform:uppercase; font-size:.85rem; letter-spacing:.02em; border-bottom:1px solid rgba(23,20,15,.1);
+  }
+  .planning-col__body{ position:relative; }
+  .planning-empty{ padding:40px 20px; text-align:center; color:var(--grey); font-size:.9rem; }
+
+  .planning-block{
+    position:absolute; left:3px; right:3px; border-radius:4px; overflow:hidden;
+    padding:4px 7px; font-size:.72rem; line-height:1.25; cursor:pointer; color:#fff;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,.25);
+  }
+  .planning-block strong{ display:block; font-size:.76rem; }
+  .planning-block span{ opacity:.9; }
+  .planning-block.is-block{ background: repeating-linear-gradient(45deg, #9a9186, #9a9186 6px, #8a8175 6px, #8a8175 12px); color:#fff; }
+  .planning-block:hover{ filter: brightness(1.08); }
+</style>
+</head>
+<body>
+
+<div id="loginPanel">
+  <p class="eyebrow eyebrow--dark">Barber King</p>
+  <h1 class="section__title" style="font-size:1.6rem;">Espace pro</h1>
+  <input type="password" id="passwordInput" class="field" placeholder="Mot de passe">
+  <button type="button" id="loginBtn" class="btn btn--primary btn--lg" style="width:100%;">Se connecter</button>
+  <p id="loginError"></p>
+</div>
+
+<div class="admin-wrap" id="dashboard" hidden>
+  <div class="admin-header">
+    <div>
+      <p class="eyebrow eyebrow--dark" style="margin-bottom:4px;">Barber King</p>
+      <h1>Planning</h1>
+    </div>
+    <button type="button" id="logoutBtn" class="btn btn--ghost">Se déconnecter</button>
+  </div>
+
+  <section class="panel">
+    <h2 class="section-title">Bloquer un créneau</h2>
+    <div class="block-form">
+      <div>
+        <label for="blockDate">Date</label>
+        <input type="date" id="blockDate">
+      </div>
+      <div>
+        <label for="blockStart">De</label>
+        <input type="time" id="blockStart" value="12:00">
+      </div>
+      <div>
+        <label for="blockEnd">À</label>
+        <input type="time" id="blockEnd" value="13:00">
+      </div>
+      <div style="flex:1; min-width:160px;">
+        <label for="blockReason">Motif (facultatif)</label>
+        <input type="text" id="blockReason" placeholder="ex. pause, rendez-vous perso" style="width:100%;">
+      </div>
+      <button type="button" id="addBlockBtn" class="btn btn--primary">Bloquer</button>
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="planning-nav">
+      <button type="button" id="prevDayBtn" aria-label="Jour précédent">‹</button>
+      <button type="button" id="todayBtn" class="today-btn">Aujourd'hui</button>
+      <button type="button" id="nextDayBtn" aria-label="Jour suivant">›</button>
+      <span class="day-label" id="dayLabel"></span>
+    </div>
+    <div class="planning-scroll">
+      <div class="planning-grid" id="planningGrid">
+        <p class="planning-empty">Chargement du planning…</p>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+(function () {
+  "use strict";
+  var TZ = "Europe/Zurich";
+  var DAY_START_MIN = 8 * 60;   // 8h00
+  var DAY_END_MIN = 19 * 60;    // 19h00
+  var PX_PER_MIN = 1.3;
+  var SERVICE_COLORS = ["#9E2B25", "#1F3552", "#B7935A", "#3f7a3a", "#6b4a8a"];
+
+  var loginPanel = document.getElementById("loginPanel");
+  var dashboard = document.getElementById("dashboard");
+  var passwordInput = document.getElementById("passwordInput");
+  var loginBtn = document.getElementById("loginBtn");
+  var loginError = document.getElementById("loginError");
+  var logoutBtn = document.getElementById("logoutBtn");
+
+  var barbersCache = null;
+  var selectedDate = todayISO();
+
+  function todayISO() {
+    return new Intl.DateTimeFormat("en-CA", { timeZone: TZ }).format(new Date());
+  }
+  function addDays(iso, days) {
+    var d = new Date(iso + "T00:00:00Z");
+    d.setUTCDate(d.getUTCDate() + days);
+    return d.toISOString().slice(0, 10);
+  }
+  function zurichDateStr(iso) {
+    return new Intl.DateTimeFormat("en-CA", { timeZone: TZ }).format(new Date(iso));
+  }
+  function zurichMinutesOfDay(iso) {
+    var fmt = new Intl.DateTimeFormat("en-GB", { timeZone: TZ, hour: "2-digit", minute: "2-digit", hour12: false });
+    var parts = {};
+    fmt.formatToParts(new Date(iso)).forEach(function (p) { parts[p.type] = p.value; });
+    return parseInt(parts.hour, 10) * 60 + parseInt(parts.minute, 10);
+  }
+
+  async function login() {
+    loginError.textContent = "";
+    try {
+      var res = await fetch("/api/admin/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ password: passwordInput.value })
+      });
+      if (!res.ok) { loginError.textContent = "Mot de passe incorrect."; return; }
+      showDashboard();
+    } catch (e) {
+      loginError.textContent = "Erreur réseau.";
+    }
+  }
+
+  async function logout() {
+    await fetch("/api/admin/logout", { method: "POST" });
+    dashboard.hidden = true;
+    loginPanel.hidden = false;
+    passwordInput.value = "";
+  }
+
+  function showDashboard() {
+    loginPanel.hidden = true;
+    dashboard.hidden = false;
+    document.getElementById("blockDate").value = selectedDate;
+    renderDayLabel();
+    loadPlanning();
+  }
+
+  function renderDayLabel() {
+    document.getElementById("dayLabel").textContent = new Intl.DateTimeFormat("fr-CH", {
+      timeZone: TZ, weekday: "long", day: "numeric", month: "long"
+    }).format(new Date(selectedDate + "T12:00:00Z"));
+  }
+
+  async function loadBarbers() {
+    if (barbersCache) return barbersCache;
+    var res = await fetch("/api/admin/barbers");
+    if (res.status === 401) { logout(); return []; }
+    barbersCache = await res.json();
+    return barbersCache;
+  }
+
+  async function loadPlanning() {
+    renderDayLabel();
+    var grid = document.getElementById("planningGrid");
+    grid.innerHTML = "<p class=\"planning-empty\">Chargement du planning…</p>";
+
+    var barbers = await loadBarbers();
+    if (!barbers.length) {
+      grid.innerHTML = "<p class=\"planning-empty\">Aucun barbier actif.</p>";
+      return;
+    }
+
+    var from = addDays(selectedDate, -1) + "T00:00:00.000Z";
+    var to = addDays(selectedDate, 1) + "T23:59:59.000Z";
+
+    var apptRes = await fetch("/api/admin/appointments?from=" + encodeURIComponent(from) + "&to=" + encodeURIComponent(to));
+    if (apptRes.status === 401) { logout(); return; }
+    var allAppts = await apptRes.json();
+    var appts = allAppts.filter(function (a) { return zurichDateStr(a.start_at) === selectedDate; });
+
+    var blockRes = await fetch("/api/admin/blocks?from=" + encodeURIComponent(from) + "&to=" + encodeURIComponent(to));
+    var allBlocks = await blockRes.json();
+    var blocks = allBlocks.filter(function (b) { return zurichDateStr(b.start_at) === selectedDate; });
+
+    renderGrid(barbers, appts, blocks);
+  }
+
+  function renderGrid(barbers, appts, blocks) {
+    var grid = document.getElementById("planningGrid");
+    grid.innerHTML = "";
+    var totalMinutes = DAY_END_MIN - DAY_START_MIN;
+    var bodyHeight = totalMinutes * PX_PER_MIN;
+    var hourLineCss = "repeating-linear-gradient(to bottom, rgba(23,20,15,.08) 0, rgba(23,20,15,.08) 1px, transparent 1px, transparent " + (60 * PX_PER_MIN) + "px)";
+
+    // Gouttière des heures
+    var gutter = document.createElement("div");
+    gutter.className = "planning-gutter";
+    gutter.style.height = (bodyHeight + 46) + "px"; // +46 pour aligner avec l'en-tête des colonnes
+    for (var m = DAY_START_MIN; m <= DAY_END_MIN; m += 60) {
+      var lab = document.createElement("div");
+      lab.className = "planning-gutter__label";
+      lab.style.top = (46 + (m - DAY_START_MIN) * PX_PER_MIN) + "px";
+      lab.textContent = Math.floor(m / 60) + "h";
+      gutter.appendChild(lab);
+    }
+    grid.appendChild(gutter);
+
+    barbers.forEach(function (barber) {
+      var col = document.createElement("div");
+      col.className = "planning-col";
+
+      var header = document.createElement("div");
+      header.className = "planning-col__header";
+      header.textContent = barber.name;
+      col.appendChild(header);
+
+      var body = document.createElement("div");
+      body.className = "planning-col__body";
+      body.style.height = bodyHeight + "px";
+      body.style.backgroundImage = hourLineCss;
+
+      var items = appts.filter(function (a) { return a.barber_id === barber.id; })
+        .map(function (a) { return { type: "appt", data: a }; })
+        .concat(blocks.filter(function (b) { return b.barber_id === barber.id; }).map(function (b) { return { type: "block", data: b }; }));
+
+      items.forEach(function (item) {
+        var start = zurichMinutesOfDay(item.data.start_at);
+        var end = zurichMinutesOfDay(item.data.end_at);
+        var top = (Math.max(start, DAY_START_MIN) - DAY_START_MIN) * PX_PER_MIN;
+        var height = Math.max(18, (end - start) * PX_PER_MIN);
+
+        var el = document.createElement("div");
+        el.className = "planning-block" + (item.type === "block" ? " is-block" : "");
+        el.style.top = top + "px";
+        el.style.height = height + "px";
+
+        if (item.type === "appt") {
+          var color = SERVICE_COLORS[item.data.service_id % SERVICE_COLORS.length];
+          el.style.background = color;
+          el.innerHTML = "<strong></strong><span></span>";
+          el.querySelector("strong").textContent = item.data.client_name;
+          el.querySelector("span").textContent = item.data.service_name;
+          el.title = "Cliquer pour annuler";
+          el.addEventListener("click", function () { cancelAppointment(item.data.id); });
+        } else {
+          el.innerHTML = "<strong></strong>";
+          el.querySelector("strong").textContent = item.data.reason || "Bloqué";
+          el.title = "Cliquer pour retirer ce blocage";
+          el.addEventListener("click", function () { removeBlock(item.data.id); });
+        }
+        body.appendChild(el);
+      });
+
+      col.appendChild(body);
+      grid.appendChild(col);
+    });
+  }
+
+  async function cancelAppointment(id) {
+    if (!confirm("Annuler ce rendez-vous ?")) return;
+    await fetch("/api/admin/appointments/" + id + "/cancel", { method: "POST" });
+    loadPlanning();
+  }
+
+  async function removeBlock(id) {
+    if (!confirm("Retirer ce blocage ?")) return;
+    await fetch("/api/admin/blocks/" + id, { method: "DELETE" });
+    loadPlanning();
+  }
+
+  document.getElementById("addBlockBtn").addEventListener("click", async function () {
+    var date = document.getElementById("blockDate").value;
+    var startTime = document.getElementById("blockStart").value;
+    var endTime = document.getElementById("blockEnd").value;
+    var reason = document.getElementById("blockReason").value;
+    if (!date || !startTime || !endTime) { alert("Merci de renseigner la date et les heures."); return; }
+    await fetch("/api/admin/blocks", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ date: date, startTime: startTime, endTime: endTime, reason: reason })
+    });
+    selectedDate = date;
+    loadPlanning();
+  });
+
+  document.getElementById("prevDayBtn").addEventListener("click", function () {
+    selectedDate = addDays(selectedDate, -1);
+    document.getElementById("blockDate").value = selectedDate;
+    loadPlanning();
+  });
+  document.getElementById("nextDayBtn").addEventListener("click", function () {
+    selectedDate = addDays(selectedDate, 1);
+    document.getElementById("blockDate").value = selectedDate;
+    loadPlanning();
+  });
+  document.getElementById("todayBtn").addEventListener("click", function () {
+    selectedDate = todayISO();
+    document.getElementById("blockDate").value = selectedDate;
+    loadPlanning();
+  });
+
+  loginBtn.addEventListener("click", login);
+  passwordInput.addEventListener("keydown", function (e) { if (e.key === "Enter") login(); });
+  logoutBtn.addEventListener("click", logout);
+
+  // Si une session valide existe déjà (cookie), tente direct le dashboard.
+  fetch("/api/admin/barbers")
+    .then(function (res) { if (res.ok) showDashboard(); })
+    .catch(function () {});
+})();
+</script>
+</body>
+</html>
