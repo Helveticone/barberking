@@ -264,6 +264,14 @@ async function handleApi(request, env, url) {
     return json(rows.results || []);
   }
 
+  // --- Public : barbiers actifs -------------------------------------------
+  if (path === "/barbers" && method === "GET") {
+    const rows = await env.DB.prepare(
+      "SELECT id, name FROM barbers WHERE active = 1 ORDER BY id"
+    ).all();
+    return json(rows.results || []);
+  }
+
   // --- Public : disponibilités --------------------------------------------
   if (path === "/availability" && method === "GET") {
     const date = url.searchParams.get("date");
