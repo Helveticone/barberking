@@ -278,8 +278,16 @@
           </tbody>
         </table>
       </div>
-      <div class="split__media split__media--pole">
-        <img src="/assets/pole-photo.jpg" alt="Enseigne traditionnelle de barbier, rouge, blanc et bleu" loading="lazy" width="1200" height="1800">
+      <div class="today-card" id="todayCard">
+        <div class="today-card__ribbon" aria-hidden="true"></div>
+        <p class="eyebrow">Aujourd'hui</p>
+        <p class="today-card__day" id="todayDayName">—</p>
+        <p class="today-card__hours" id="todayHoursText">Chargement…</p>
+        <span class="today-card__pill" id="todayStatusPill">
+          <span class="dot" aria-hidden="true"></span>
+          <span id="todayStatusText">—</span>
+        </span>
+        <a href="#reservation" class="link-arrow today-card__link">Réserver un créneau →</a>
       </div>
     </div>
   </section>
