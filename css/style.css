@@ -241,10 +241,6 @@ h1,h2,h3{ font-family: var(--font-display); text-transform: uppercase; letter-sp
   border-radius: var(--radius); box-shadow: var(--shadow-lg);
   width: 100%; aspect-ratio: 4 / 3; object-fit: cover; object-position: center 22%;
 }
-.split__media--pole img{
-  max-width: 380px; margin: 0 auto;
-  aspect-ratio: 2 / 3; object-fit: cover; object-position: center 15%;
-}
 .split__badge{
   position: absolute; left: 20px; bottom: -18px;
   background: var(--white); color: var(--ink);
@@ -256,6 +252,39 @@ h1,h2,h3{ font-family: var(--font-display); text-transform: uppercase; letter-sp
 .split__text p{ line-height: 1.65; color: var(--grey-light); margin: 0 0 18px; max-width: 52ch; }
 .split__text .btn{ margin-top: 6px; }
 #horaires .split__text p{ color: var(--grey); }
+
+/* Encart "Aujourd'hui" (remplace une photo décorative par une info utile) */
+.today-card{
+  position: relative; overflow: hidden;
+  background: var(--ink); color: var(--paper-2);
+  border-radius: 6px; box-shadow: var(--shadow-lg);
+  padding: 40px 34px 34px;
+}
+.today-card__ribbon{
+  position: absolute; top: 0; left: 0; right: 0; height: 6px;
+  background: repeating-linear-gradient(
+    -45deg,
+    var(--red) 0 16px, var(--white) 16px 32px, var(--navy) 32px 48px, var(--white) 48px 64px
+  );
+}
+.today-card .eyebrow{ color: var(--brass); margin-bottom: 10px; }
+.today-card__day{
+  font-family: var(--font-display); text-transform: uppercase; letter-spacing: .02em;
+  font-size: 2rem; margin: 0 0 6px; color: var(--white);
+}
+.today-card__hours{
+  font-size: 1.05rem; color: var(--grey-light); margin: 0 0 22px;
+  font-variant-numeric: tabular-nums;
+}
+.today-card__pill{
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.14);
+  border-radius: 999px; padding: 8px 16px; font-size: .88rem; font-weight: 600;
+  margin-bottom: 24px;
+}
+.today-card__pill.is-open .dot{ background: #6FA96B; box-shadow: 0 0 0 3px rgba(111,169,107,.25); }
+.today-card__pill.is-closed .dot{ background: #B5544F; box-shadow: 0 0 0 3px rgba(181,84,79,.25); }
+.today-card__link{ display: block; }
 
 /* Hours table */
 .hours{ width: 100%; border-collapse: collapse; margin-top: 26px; max-width: 480px; }
@@ -368,7 +397,7 @@ h1,h2,h3{ font-family: var(--font-display); text-transform: uppercase; letter-sp
   .cards{ grid-template-columns: 1fr; }
   .container--split, .container--split-rev{ grid-template-columns: 1fr; }
   .container--split-rev{ direction: initial; }
-  .split__media--pole{ order: -1; max-width: 260px; margin: 0 auto 20px; }
+  #horaires .today-card{ order: -1; margin-bottom: 8px; }
   .contact-grid{ grid-template-columns: 1fr; }
   .gallery{ grid-template-columns: repeat(2, 1fr); grid-auto-rows: 190px; }
 }
