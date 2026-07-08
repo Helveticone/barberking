@@ -27,7 +27,7 @@
 
 <link rel="stylesheet" href="/css/style.css">
 
-<!-- Structured data (schema.org HairSalon) -->
+<!-- Structured data : à valider (adresse exacte à confirmer par le salon) -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -38,7 +38,7 @@
   "priceRange": "CHF 15–35",
   "address": {
     "@type": "PostalAddress",
-    "streetAddress": "Avenue de la Gare 51",
+    "streetAddress": "Rue Albert-Schnyder 4",
     "addressLocality": "Delémont",
     "postalCode": "2800",
     "addressRegion": "JU",
@@ -159,7 +159,7 @@
   <section class="section section--dark" id="hassan">
     <div class="container container--split">
       <div class="split__media">
-        <img src="/assets/model-portrait.jpg" alt="Illustration d'une coupe homme nette réalisée chez Barber King" loading="lazy" width="900" height="600">
+        <img src="/assets/model-portrait.jpg" alt="Illustration d'une coupe homme nette réalisée chez Barber King" loading="lazy" width="1100" height="733">
         <div class="split__badge">
           <span class="ribbon-dot" aria-hidden="true"></span> Avec ou sans rendez-vous
         </div>
@@ -234,6 +234,13 @@
 
         <div class="booking__step">
           <span class="booking__num">3</span>
+          <h3>Votre nom</h3>
+          <label class="field-label" for="clientName">Prénom et nom</label>
+          <input type="text" id="clientName" class="field" placeholder="ex. Julien Frésard" autocomplete="name">
+        </div>
+
+        <div class="booking__step">
+          <span class="booking__num">4</span>
           <h3>Vos disponibilités</h3>
           <label class="field-label" for="prefTime">Jour et heure souhaités (facultatif)</label>
           <input type="text" id="prefTime" class="field" placeholder="ex. jeudi vers 17h">
@@ -272,7 +279,7 @@
         </table>
       </div>
       <div class="split__media split__media--pole">
-        <img src="/assets/pole-photo.jpg" alt="Enseigne traditionnelle de barbier, rouge, blanc et bleu" loading="lazy" width="900" height="1350">
+        <img src="/assets/pole-photo.jpg" alt="Enseigne traditionnelle de barbier, rouge, blanc et bleu" loading="lazy" width="1200" height="1800">
       </div>
     </div>
   </section>
@@ -286,7 +293,8 @@
       <div class="contact-grid">
         <div class="contact-card">
           <h3>Adresse</h3>
-          <p>Avenue de la Gare 51<br>2800 Delémont, Suisse</p>
+          <p>Rue Albert-Schnyder 4<br>2800 Delémont, Suisse</p>
+          <p class="contact-card__note">Adresse à confirmer par le salon avant publication.</p>
           <a class="link-arrow" href="https://www.google.com/maps/search/?api=1&query=Barber+King+Delémont" target="_blank" rel="noopener">Itinéraire →</a>
         </div>
         <div class="contact-card">
@@ -303,7 +311,7 @@
       <div class="map-embed">
         <iframe
           title="Carte : Barber King, Delémont"
-          src="https://www.google.com/maps?q=Avenue+de+la+Gare+51,+2800+Delémont&output=embed"
+          src="https://www.google.com/maps?q=Rue+Albert-Schnyder+4,+2800+Delémont&output=embed"
           loading="lazy"
           referrerpolicy="no-referrer-when-downgrade">
         </iframe>
