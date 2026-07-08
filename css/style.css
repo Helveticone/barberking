@@ -26,7 +26,7 @@
 }
 
 *, *::before, *::after{ box-sizing: border-box; }
-html{ scroll-behavior: smooth; scroll-padding-top: calc(var(--header-h) + 40px); }
+html{ scroll-behavior: smooth; scroll-padding-top: calc(var(--header-h) + 40px); overflow-x: hidden; }
 @media (prefers-reduced-motion: reduce){
   html{ scroll-behavior: auto; }
   *{ animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; }
@@ -429,4 +429,12 @@ h1,h2,h3{ font-family: var(--font-display); text-transform: uppercase; letter-sp
   .section{ padding: 68px 0; }
   .gallery{ grid-template-columns: 1fr 1fr; grid-auto-rows: 160px; }
   .hero{ min-height: 100vh; }
+
+  /* Les boutons à texte long (ex. "Envoyer la demande sur WhatsApp")
+     ne doivent plus forcer une ligne unique sur petit écran :
+     ça poussait la page à déborder horizontalement. */
+  .btn{ white-space: normal; text-align: center; }
+  .hero__cta{ flex-direction: column; align-items: stretch; }
+  .hero__cta .btn{ width: 100%; }
+  .booking__summary .btn{ width: 100%; }
 }
