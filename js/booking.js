@@ -1,13 +1,12 @@
 (function () {
   "use strict";
 
-  var BARBER_ID = 1; // Hassan. Pour un futur 2e barbier : ajouter un sélecteur
-                      // qui change cette valeur avant l'appel à /api/availability.
-
   var state = {
     serviceId: null,
     serviceName: null,
     servicePrice: null,
+    barberId: null,
+    barberName: null,
     date: null,
     time: null
   };
@@ -60,6 +59,53 @@
     }
   }
 
+  async function loadBarbers() {
+    els.barberOptions.innerHTML = "";
+    try {
+      var res = await fetch("/api/barbers");
+      if (!res.ok) throw new Error("barbers_error");
+      var barbers = await res.json();
+      if (!barbers.length) {
+        els.barberOptions.innerHTML = "<p class=\"booking__hint\">Aucun barbier disponible pour le moment.</p>";
+        return;
+      }
+      barbers.forEach(function (b, i) {
+        var pill = document.createElement("button");
+        pill.type = "button";
+        pill.className = "pill";
+        pill.setAttribute("data-barber-id", b.id);
+        pill.setAttribute("aria-pressed", "false");
+        pill.textContent = b.name;
+        els.barberOptions.appendChild(pill);
+      });
+      // Un seul barbier actif : présélectionné pour ne pas ajouter une
+      // étape inutile, mais reste modifiable dès qu'un 2e est actif.
+      if (barbers.length === 1) {
+        selectBarberPill(els.barberOptions.querySelector(".pill"));
+      }
+    } catch (e) {
+      els.barberOptions.innerHTML = "<p class=\"booking__hint\">Impossible de charger les barbiers. Rechargez la page ou appelez le salon.</p>";
+    }
+  }
+
+  function selectBarberPill(pill) {
+    if (!pill) return;
+    els.barberOptions.querySelectorAll(".pill").forEach(function (p) {
+      p.setAttribute("aria-pressed", p === pill ? "true" : "false");
+    });
+    state.barberId = parseInt(pill.getAttribute("data-barber-id"), 10);
+    state.barberName = pill.textContent.trim();
+    state.time = null;
+    els.slotsOptions.innerHTML = "";
+    if (state.serviceId && els.dateInput.value) {
+      loadSlots();
+    } else {
+      els.slotsMessage.textContent = "Sélectionnez maintenant une date.";
+      els.slotsMessage.hidden = false;
+    }
+    updateSummary();
+  }
+
   function escapeHtml(str) {
     var div = document.createElement("div");
     div.textContent = str;
@@ -74,17 +120,19 @@
     state.serviceName = pill.textContent.replace(/\s+/g, " ").trim();
     state.time = null;
     els.slotsOptions.innerHTML = "";
-    if (els.dateInput.value) {
+    if (state.barberId && els.dateInput.value) {
       loadSlots();
     } else {
-      els.slotsMessage.textContent = "Choisissez maintenant une date.";
+      els.slotsMessage.textContent = state.barberId
+        ? "Choisissez maintenant une date."
+        : "Choisissez d'abord un barbier.";
       els.slotsMessage.hidden = false;
     }
     updateSummary();
   }
 
   async function loadSlots() {
-    if (!state.serviceId || !els.dateInput.value) return;
+    if (!state.serviceId || !state.barberId || !els.dateInput.value) return;
     state.date = els.dateInput.value;
     state.time = null;
     els.slotsOptions.innerHTML = "<p class=\"booking__hint\">Recherche des créneaux…</p>";
@@ -92,7 +140,7 @@
     updateSummary();
 
     try {
-      var url = "/api/availability?date=" + encodeURIComponent(state.date) + "&serviceId=" + state.serviceId + "&barberId=" + BARBER_ID;
+      var url = "/api/availability?date=" + encodeURIComponent(state.date) + "&serviceId=" + state.serviceId + "&barberId=" + state.barberId;
       var res = await fetch(url);
       var data = await res.json();
       els.slotsOptions.innerHTML = "";
@@ -103,7 +151,7 @@
         return;
       }
       if (!data.slots || data.slots.length === 0) {
-        els.slotsMessage.textContent = "Aucun créneau libre ce jour-là. Essayez une autre date.";
+        els.slotsMessage.textContent = "Aucun créneau libre ce jour-là avec ce barbier. Essayez une autre date ou un autre barbier.";
         els.slotsMessage.hidden = false;
         return;
       }
@@ -134,13 +182,14 @@
   function currentPhone() { return els.phoneInput.value.trim(); }
 
   function isComplete() {
-    return !!(state.serviceId && state.date && state.time && currentName() && currentPhone().length >= 9);
+    return !!(state.serviceId && state.barberId && state.date && state.time && currentName() && currentPhone().length >= 9);
   }
 
   function updateSummary() {
     if (!isComplete()) {
       var missing = [];
       if (!state.serviceId) missing.push("une prestation");
+      else if (!state.barberId) missing.push("un barbier");
       else if (!state.time) missing.push("un créneau");
       if (!currentName()) missing.push("votre nom");
       if (currentPhone().length < 9) missing.push("votre téléphone");
@@ -153,7 +202,7 @@
       timeZone: "Europe/Zurich", weekday: "long", day: "numeric", month: "long"
     }).format(new Date(state.date + "T12:00:00Z"));
     els.summaryText.textContent =
-      currentName() + " — " + state.serviceName + ", " + dateLabel + " à " + state.time + ".";
+      currentName() + " — " + state.serviceName + " avec " + state.barberName + ", " + dateLabel + " à " + state.time + ".";
     els.confirmBtn.disabled = false;
     els.confirmBtn.classList.remove("btn--disabled");
   }
@@ -169,7 +218,7 @@
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           serviceId: state.serviceId,
-          barberId: BARBER_ID,
+          barberId: state.barberId,
           date: state.date,
           time: state.time,
           clientName: currentName(),
@@ -221,6 +270,7 @@
     els.widget = document.getElementById("bookingWidget");
     if (!els.widget) return;
     els.serviceOptions = document.getElementById("serviceOptions");
+    els.barberOptions = document.getElementById("barberOptions");
     els.dateInput = document.getElementById("bookingDate");
     els.slotsOptions = document.getElementById("slotsOptions");
     els.slotsMessage = document.getElementById("slotsMessage");
@@ -236,6 +286,10 @@
       var pill = e.target.closest(".pill");
       if (pill) selectServicePill(pill);
     });
+    els.barberOptions.addEventListener("click", function (e) {
+      var pill = e.target.closest(".pill");
+      if (pill) selectBarberPill(pill);
+    });
     els.slotsOptions.addEventListener("click", function (e) {
       var pill = e.target.closest(".pill");
       if (pill) selectSlotPill(pill);
@@ -246,6 +300,7 @@
     els.confirmBtn.addEventListener("click", submitBooking);
 
     loadServices();
+    loadBarbers();
   }
 
   document.addEventListener("DOMContentLoaded", init);
