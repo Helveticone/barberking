@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Barber King Delémont — Coiffeur & Barbier pour homme | Coupe, Barbe, Enfant</title>
+<meta name="description" content="Barber King, votre barbier à Delémont. Coupe homme 25.-, coupe enfant 15.-, coupe et barbe 35.-. Avec ou sans rendez-vous. Réservez en 1 clic sur WhatsApp avec Hassan.">
+<meta name="keywords" content="barbier Delémont, coiffeur homme Delémont, coupe homme, coupe barbe, Barber King, Hassan barbier, coiffeur Jura">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://barberking-delemont.pages.dev/">
+
+<!-- Open Graph -->
+<meta property="og:type" content="business.business">
+<meta property="og:title" content="Barber King — Barbier à Delémont">
+<meta property="og:description" content="Coupe homme, coupe enfant, coupe et barbe. Avec ou sans rendez-vous. Réservation directe sur WhatsApp.">
+<meta property="og:image" content="/assets/logo-pole-bg.jpg">
+<meta property="og:locale" content="fr_CH">
+<meta property="og:url" content="https://barberking-delemont.pages.dev/">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon-180.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="/css/style.css?v=4">
+
+<!-- Structured data : à valider (adresse exacte à confirmer par le salon) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HairSalon",
+  "name": "Barber King",
+  "image": "https://barberking-delemont.pages.dev/assets/logo-pole-bg.jpg",
+  "telephone": "+41783528359",
+  "priceRange": "CHF 15–35",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Rue Albert-Schnyder 4",
+    "addressLocality": "Delémont",
+    "postalCode": "2800",
+    "addressRegion": "JU",
+    "addressCountry": "CH"
+  },
+  "openingHoursSpecification": [
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": "Monday", "opens": "13:00", "closes": "18:30" },
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Tuesday","Wednesday","Thursday"], "opens": "09:00", "closes": "18:30" },
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": "Friday", "opens": "09:00", "closes": "12:00" },
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": "Friday", "opens": "13:30", "closes": "18:30" },
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": "Saturday", "opens": "08:30", "closes": "17:00" }
+  ],
+  "makesOffer": [
+    { "@type": "Offer", "name": "Coupe homme", "price": "25", "priceCurrency": "CHF" },
+    { "@type": "Offer", "name": "Coupe enfant", "price": "15", "priceCurrency": "CHF" },
+    { "@type": "Offer", "name": "Coupe et barbe", "price": "35", "priceCurrency": "CHF" }
+  ]
+}
+</script>
+</head>
+<body>
+
+<!-- Bandeau info -->
+<div class="topbar">
+  <div class="topbar__inner">
+    <span class="topbar__status" id="statusChip" aria-live="polite">
+      <span class="dot" aria-hidden="true"></span> <span id="statusText">Vérification des horaires…</span>
+    </span>
+    <a class="topbar__phone" href="tel:+41783528359">078 352 83 59</a>
+  </div>
+</div>
+
+<!-- Header -->
+<header class="header" id="siteHeader">
+  <div class="header__inner">
+    <a href="#top" class="brand">
+      <img src="/assets/logo.jpg" alt="Barber King, salon de coiffure pour homme à Delémont" width="44" height="44" class="brand__mark">
+      <span class="brand__word">Barber<em>King</em></span>
+    </a>
+
+    <nav class="nav" id="mainNav" aria-label="Navigation principale">
+      <a href="#prestations">Prestations</a>
+      <a href="#hassan">Le barbier</a>
+      <a href="#galerie">Galerie</a>
+      <a href="#reservation">Réserver</a>
+      <a href="#horaires">Horaires</a>
+      <a href="#contact">Accès</a>
+    </nav>
+
+    <div class="header__actions">
+      <a class="btn btn--ghost" href="tel:+41783528359">Appeler</a>
+      <a class="btn btn--primary" href="#reservation">
+        <svg viewBox="0 0 24 24" class="ico" aria-hidden="true"><path fill="currentColor" d="M17.5 14.4c-.3-.1-1.7-.8-1.9-.9-.3-.1-.4-.1-.6.1-.2.3-.7.9-.8 1-.1.2-.3.2-.6.1-.3-.1-1.2-.4-2.3-1.4-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.5.1-.6l.4-.5c.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5C11 9 10.4 7.6 10.1 7c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.4-.3.3-1 1-1 2.4s1 2.8 1.2 3c.1.2 2 3.1 4.9 4.3.7.3 1.2.5 1.7.6.7.2 1.3.2 1.8.1.6-.1 1.7-.7 1.9-1.3.2-.6.2-1.2.2-1.3-.1-.1-.3-.2-.6-.3z"/><path fill="currentColor" d="M12 2C6.5 2 2 6.5 2 12c0 1.9.5 3.7 1.5 5.3L2 22l4.8-1.5C8.3 21.5 10.1 22 12 22c5.5 0 10-4.5 10-10S17.5 2 12 2zm0 18.2c-1.7 0-3.3-.5-4.7-1.3l-.3-.2-3.1 1 1-3-.2-.3C3.8 15 3.3 13.5 3.3 12 3.3 7.2 7.2 3.3 12 3.3S20.7 7.2 20.7 12 16.8 20.2 12 20.2z"/></svg>
+        Réserver sur WhatsApp
+      </a>
+    </div>
+
+    <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="mainNav" aria-label="Ouvrir le menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero">
+    <img class="hero__img" src="/assets/clipper-dramatic-bw.jpg" alt="Barbier réalisant une taille nette à la tondeuse chez Barber King" width="1280" height="1920" fetchpriority="high">
+    <div class="hero__scrim" aria-hidden="true"></div>
+    <div class="hero__content">
+      <p class="eyebrow">Barbershop — Delémont</p>
+      <h1 class="hero__title">La coupe nette.<br>Le style qui dure.</h1>
+      <p class="hero__lead">Coupe homme, coupe enfant, coupe et barbe. Un seul barbier, un travail précis : Hassan vous reçoit avec ou sans rendez-vous.</p>
+      <div class="hero__cta">
+        <a href="#reservation" class="btn btn--primary btn--lg">Réserver sur WhatsApp</a>
+        <a href="tel:+41783528359" class="btn btn--outline btn--lg">078 352 83 59</a>
+      </div>
+      <ul class="hero__facts">
+        <li><strong>25.-</strong> coupe homme</li>
+        <li><strong>15.-</strong> coupe enfant</li>
+        <li><strong>35.-</strong> coupe &amp; barbe</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="ribbon" role="presentation" aria-hidden="true"></div>
+
+  <!-- PRESTATIONS -->
+  <section class="section" id="prestations">
+    <div class="container">
+      <p class="eyebrow eyebrow--dark">Prestations &amp; tarifs</p>
+      <h2 class="section__title">Trois coupes. Aucun compromis.</h2>
+      <p class="section__lead">Des tarifs clairs, affichés une fois pour toutes. Ce que vous voyez est ce que vous payez.</p>
+
+      <div class="cards">
+        <article class="card">
+          <div class="card__price">25<span>.-</span></div>
+          <h3>Coupe homme</h3>
+          <p>Coupe aux ciseaux ou à la tondeuse, dégradé, finitions au fil et à la nuque. Adaptée à votre visage, pas à la mode du moment.</p>
+        </article>
+        <article class="card card--accent">
+          <div class="card__price">35<span>.-</span></div>
+          <h3>Coupe &amp; barbe</h3>
+          <p>La coupe complète, plus la taille et la mise en forme de la barbe. Le format le plus demandé du salon.</p>
+        </article>
+        <article class="card">
+          <div class="card__price">15<span>.-</span></div>
+          <h3>Coupe enfant</h3>
+          <p>Coupe pour les jeunes clients, dans le calme et sans stress — pour eux comme pour vous.</p>
+        </article>
+      </div>
+
+      <p class="note">Avec ou sans rendez-vous. En cas d'affluence, réserver votre créneau sur WhatsApp reste le moyen le plus sûr d'être servi à l'heure.</p>
+    </div>
+  </section>
+
+  <!-- HASSAN -->
+  <section class="section section--dark" id="hassan">
+    <div class="container container--split">
+      <div class="split__media">
+        <img src="/assets/model-portrait.jpg" alt="Illustration d'une coupe homme nette réalisée chez Barber King" loading="lazy" width="1100" height="733">
+        <div class="split__badge">
+          <span class="ribbon-dot" aria-hidden="true"></span> Avec ou sans rendez-vous
+        </div>
+      </div>
+      <div class="split__text">
+        <p class="eyebrow">Le barbier</p>
+        <h2 class="section__title section__title--light">Hassan</h2>
+        <p>Chez Barber King, une seule paire de mains s'occupe de votre coupe : celles d'Hassan. Le salon fait le choix d'un seul barbier plutôt que d'un roulement d'équipe — pour une régularité que vous retrouvez à chaque visite.</p>
+        <p>Coupe, dégradé, taille de barbe : chaque prestation est pensée pour repartir net, sans avoir à expliquer deux fois ce que vous voulez.</p>
+        <a href="#reservation" class="btn btn--primary">Prendre rendez-vous avec Hassan</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="ribbon ribbon--thin" role="presentation" aria-hidden="true"></div>
+
+  <!-- GALERIE -->
+  <section class="section" id="galerie">
+    <div class="container">
+      <p class="eyebrow eyebrow--dark">Dans le salon</p>
+      <h2 class="section__title">Le geste, avant tout</h2>
+      <p class="section__lead">Ciseaux, tondeuse, coupe-choux : le métier tel qu'il se pratique chez Barber King.</p>
+
+      <div class="gallery">
+        <figure class="gallery__item gallery__item--tall">
+          <img src="/assets/straight-razor-shave.jpg" alt="Rasage au coupe-choux, finition nette du contour de barbe" loading="lazy" width="1200" height="876">
+        </figure>
+        <figure class="gallery__item">
+          <img src="/assets/comb-scissor-bw.jpg" alt="Coupe aux ciseaux, peigne en main, précision de coupe" loading="lazy" width="1200" height="800">
+        </figure>
+        <figure class="gallery__item">
+          <img src="/assets/scissors-cut-color.jpg" alt="Dégradé aux ciseaux sur cheveux courts" loading="lazy" width="1200" height="800">
+        </figure>
+        <figure class="gallery__item gallery__item--tall">
+          <img src="/assets/brush-razor-stillife.jpg" alt="Blaireau et rasoir traditionnel, outils du rasage à l'ancienne" loading="lazy" width="1200" height="932">
+        </figure>
+        <figure class="gallery__item">
+          <img src="/assets/clipper-bw.jpg" alt="Tondeuse de précision sur la nuque" loading="lazy" width="1200" height="1800">
+        </figure>
+        <figure class="gallery__item">
+          <img src="/assets/scissors-comb-color.jpg" alt="Ciseaux effileurs et peigne, finition de nuque" loading="lazy" width="1200" height="856">
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- RESERVATION -->
+  <section class="section section--booking" id="reservation">
+    <div class="container">
+      <p class="eyebrow eyebrow--dark">Réservation</p>
+      <h2 class="section__title">Réservez en ligne</h2>
+      <p class="section__lead">Choisissez votre prestation, un créneau réellement disponible dans l'agenda de Hassan, et confirmez. Vous recevez votre confirmation sur WhatsApp.</p>
+
+      <div class="booking" id="bookingWidget" data-state="loading">
+
+        <div class="booking__step">
+          <span class="booking__num">1</span>
+          <h3>La prestation</h3>
+          <div class="booking__options" id="serviceOptions" role="radiogroup" aria-label="Choix de la prestation">
+            <p class="booking__loading">Chargement des prestations…</p>
+          </div>
+        </div>
+
+        <div class="booking__step">
+          <span class="booking__num">2</span>
+          <h3>Date et heure</h3>
+          <label class="field-label" for="bookingDate">Choisissez une date</label>
+          <input type="date" id="bookingDate" class="field" disabled>
+          <div class="booking__options" id="slotsOptions" role="radiogroup" aria-label="Choix du créneau"></div>
+          <p class="booking__hint" id="slotsMessage">Sélectionnez d'abord une prestation.</p>
+        </div>
+
+        <div class="booking__step">
+          <span class="booking__num">3</span>
+          <h3>Vos coordonnées</h3>
+          <label class="field-label" for="clientName">Prénom et nom</label>
+          <input type="text" id="clientName" class="field" placeholder="ex. Julien Frésard" autocomplete="name">
+          <label class="field-label" for="clientPhone" style="margin-top:16px;">Téléphone (WhatsApp)</label>
+          <input type="tel" id="clientPhone" class="field" placeholder="ex. 078 352 83 59" autocomplete="tel">
+        </div>
+
+        <div class="booking__summary">
+          <p id="summaryText">Sélectionnez une prestation, une date et une heure pour continuer.</p>
+          <button type="button" id="confirmBtn" class="btn btn--primary btn--lg btn--disabled" disabled>
+            Confirmer le rendez-vous
+          </button>
+        </div>
+
+        <div class="booking__confirmation" id="bookingConfirmation" hidden>
+          <p class="booking__confirmation-title">✅ Rendez-vous confirmé !</p>
+          <p id="confirmationDetails"></p>
+          <a href="#" id="waFallbackLink" class="btn btn--primary" hidden target="_blank" rel="noopener">
+            Confirmer sur WhatsApp
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="ribbon ribbon--thin" role="presentation" aria-hidden="true"></div>
+
+  <!-- HORAIRES -->
+  <section class="section" id="horaires">
+    <div class="container container--split container--split-rev">
+      <div class="split__text">
+        <p class="eyebrow eyebrow--dark">Horaires</p>
+        <h2 class="section__title">Ouvert six jours sur sept</h2>
+        <p>Le salon est fermé le dimanche. Le vendredi, une pause de midi sépare deux services.</p>
+        <table class="hours" id="hoursTable">
+          <tbody>
+            <tr data-day="1"><th>Lundi</th><td>13h00 – 18h30</td></tr>
+            <tr data-day="2"><th>Mardi</th><td>9h00 – 18h30</td></tr>
+            <tr data-day="3"><th>Mercredi</th><td>9h00 – 18h30</td></tr>
+            <tr data-day="4"><th>Jeudi</th><td>9h00 – 18h30</td></tr>
+            <tr data-day="5"><th>Vendredi</th><td>9h00 – 12h00 / 13h30 – 18h30</td></tr>
+            <tr data-day="6"><th>Samedi</th><td>8h30 – 17h00</td></tr>
+            <tr data-day="0"><th>Dimanche</th><td>Fermé</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="today-card" id="todayCard">
+        <div class="today-card__ribbon" aria-hidden="true"></div>
+        <p class="eyebrow">Aujourd'hui</p>
+        <p class="today-card__day" id="todayDayName">—</p>
+        <p class="today-card__hours" id="todayHoursText">Chargement…</p>
+        <span class="today-card__pill" id="todayStatusPill">
+          <span class="dot" aria-hidden="true"></span>
+          <span id="todayStatusText">—</span>
+        </span>
+        <a href="#reservation" class="link-arrow today-card__link">Réserver un créneau →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="section section--dark" id="contact">
+    <div class="container">
+      <p class="eyebrow">Accès</p>
+      <h2 class="section__title section__title--light">Venir chez Barber King</h2>
+
+      <div class="contact-grid">
+        <div class="contact-card">
+          <h3>Adresse</h3>
+          <p>Rue Albert-Schnyder 4<br>2800 Delémont, Suisse</p>
+          <p class="contact-card__note">Adresse à confirmer par le salon avant publication.</p>
+          <a class="link-arrow" href="https://www.google.com/maps/search/?api=1&query=Barber+King+Delémont" target="_blank" rel="noopener">Itinéraire →</a>
+        </div>
+        <div class="contact-card">
+          <h3>Téléphone &amp; WhatsApp</h3>
+          <p><a href="tel:+41783528359">078 352 83 59</a></p>
+          <a class="link-arrow" href="#reservation">Réserver sur WhatsApp →</a>
+        </div>
+        <div class="contact-card">
+          <h3>Formule</h3>
+          <p>Avec ou sans rendez-vous.<br>Un seul barbier : Hassan.</p>
+        </div>
+      </div>
+
+      <div class="map-embed">
+        <iframe
+          title="Carte : Barber King, Delémont"
+          src="https://www.google.com/maps?q=Rue+Albert-Schnyder+4,+2800+Delémont&output=embed"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer__inner">
+    <a href="#top" class="brand brand--footer">
+      <img src="/assets/logo.jpg" alt="" width="36" height="36" class="brand__mark">
+      <span class="brand__word">Barber<em>King</em></span>
+    </a>
+    <nav class="footer__nav" aria-label="Liens du pied de page">
+      <a href="#prestations">Prestations</a>
+      <a href="#hassan">Le barbier</a>
+      <a href="#reservation">Réserver</a>
+      <a href="#horaires">Horaires</a>
+      <a href="#contact">Accès</a>
+    </nav>
+    <p class="footer__legal">© <span id="year"></span> Barber King, Delémont. Tous droits réservés.</p>
+  </div>
+</footer>
+
+<a href="#reservation" class="mobile-cta" aria-label="Réserver sur WhatsApp">
+  <svg viewBox="0 0 24 24" class="ico" aria-hidden="true"><path fill="currentColor" d="M17.5 14.4c-.3-.1-1.7-.8-1.9-.9-.3-.1-.4-.1-.6.1-.2.3-.7.9-.8 1-.1.2-.3.2-.6.1-.3-.1-1.2-.4-2.3-1.4-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.5.1-.6l.4-.5c.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5C11 9 10.4 7.6 10.1 7c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.4-.3.3-1 1-1 2.4s1 2.8 1.2 3c.1.2 2 3.1 4.9 4.3.7.3 1.2.5 1.7.6.7.2 1.3.2 1.8.1.6-.1 1.7-.7 1.9-1.3.2-.6.2-1.2.2-1.3-.1-.1-.3-.2-.6-.3z"/><path fill="currentColor" d="M12 2C6.5 2 2 6.5 2 12c0 1.9.5 3.7 1.5 5.3L2 22l4.8-1.5C8.3 21.5 10.1 22 12 22c5.5 0 10-4.5 10-10S17.5 2 12 2zm0 18.2c-1.7 0-3.3-.5-4.7-1.3l-.3-.2-3.1 1 1-3-.2-.3C3.8 15 3.3 13.5 3.3 12 3.3 7.2 7.2 3.3 12 3.3S20.7 7.2 20.7 12 16.8 20.2 12 20.2z"/></svg>
+  Réserver
+</a>
+
+<script src="/js/booking.js?v=1" defer></script>
+<script src="/js/app.js?v=2" defer></script>
+</body>
+</html>

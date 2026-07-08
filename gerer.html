@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gérer mon rendez-vous — Barber King</title>
+<meta name="robots" content="noindex, nofollow">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/style.css?v=3">
+<style>
+  body{ background: var(--paper); min-height: 100vh; display:flex; align-items:center; justify-content:center; }
+  .manage-card{
+    max-width: 420px; width: 100%; margin: 40px 20px; background: var(--white);
+    border-radius: 6px; box-shadow: var(--shadow-lg); padding: 36px 30px; text-align:center;
+  }
+  .manage-card h1{ font-size: 1.4rem; margin-bottom: 18px; }
+  .manage-card p{ color: var(--grey); line-height:1.6; margin: 0 0 10px; }
+  .manage-card strong{ color: var(--ink); }
+  .status-cancelled{ color: var(--red); font-weight:600; }
+  .status-confirmed{ color: #3f7a3a; font-weight:600; }
+</style>
+</head>
+<body>
+
+<div class="manage-card">
+  <p class="eyebrow eyebrow--dark">Barber King</p>
+  <h1>Votre rendez-vous</h1>
+  <div id="content"><p>Chargement…</p></div>
+</div>
+
+<script>
+(function () {
+  "use strict";
+  var token = new URLSearchParams(location.search).get("token");
+  var content = document.getElementById("content");
+
+  function render(appt) {
+    var dt = new Date(appt.start_at);
+    var dateLabel = new Intl.DateTimeFormat("fr-CH", {
+      timeZone: "Europe/Zurich", weekday: "long", day: "numeric", month: "long", hour: "2-digit", minute: "2-digit"
+    }).format(dt);
+
+    if (appt.status === "cancelled") {
+      content.innerHTML =
+        "<p><strong>" + appt.service_name + "</strong> avec " + appt.barber_name + "</p>" +
+        "<p>" + dateLabel + "</p>" +
+        "<p class=\"status-cancelled\">Ce rendez-vous est annulé.</p>" +
+        "<p>Pour reprendre un créneau, réservez à nouveau sur le site de Barber King.</p>";
+      return;
+    }
+
+    content.innerHTML =
+      "<p><strong>" + appt.service_name + "</strong> avec " + appt.barber_name + "</p>" +
+      "<p>" + dateLabel + "</p>" +
+      "<p class=\"status-confirmed\">Confirmé</p>" +
+      "<button type=\"button\" id=\"cancelBtn\" class=\"btn btn--outline\" style=\"color:var(--red); border-color:var(--red);\">Annuler ce rendez-vous</button>";
+
+    document.getElementById("cancelBtn").addEventListener("click", async function () {
+      if (!confirm("Confirmer l'annulation de ce rendez-vous ?")) return;
+      var res = await fetch("/api/appointments/manage/" + token + "/cancel", { method: "POST" });
+      if (res.ok) {
+        appt.status = "cancelled";
+        render(appt);
+      } else {
+        alert("Impossible d'annuler ce rendez-vous. Contactez le salon directement.");
+      }
+    });
+  }
+
+  if (!token) {
+    content.innerHTML = "<p>Lien invalide.</p>";
+  } else {
+    fetch("/api/appointments/manage/" + token)
+      .then(function (res) {
+        if (!res.ok) throw new Error("not_found");
+        return res.json();
+      })
+      .then(render)
+      .catch(function () {
+        content.innerHTML = "<p>Rendez-vous introuvable. Contactez le salon au <a href=\"tel:+41783528359\">078 352 83 59</a>.</p>";
+      });
+  }
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+name = "barberking-delemont"
+main = "src/index.js"
+compatibility_date = "2026-01-01"
+
+[assets]
+directory = "."
+binding = "ASSETS"
+not_found_handling = "404-page"
+
+# Base de données D1 — remplacez "database_id" par l'ID réel obtenu après :
+#   wrangler d1 create barberking
+# (voir README.md, section "Mise en place de la base de données")
+[[d1_databases]]
+binding = "DB"
+database_name = "barberking"
+database_id = "REMPLACER_PAR_L_ID_REEL"
+
+# Rappels WhatsApp : vérifie toutes les heures s'il y a des rendez-vous
+# à rappeler (fenêtre 23h-25h avant le rendez-vous, voir src/index.js).
+[triggers]
+crons = ["0 * * * *"]

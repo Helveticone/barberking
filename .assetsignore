@@ -1,0 +1,6 @@
+src/
+schema.sql
+wrangler.toml
+README.md
+NOTES-DESIGN.md
+.assetsignore
