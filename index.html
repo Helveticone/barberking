@@ -167,7 +167,7 @@
       <div class="split__text">
         <p class="eyebrow">Le barbier</p>
         <h2 class="section__title section__title--light">Hassan</h2>
-        <p>Chez Barber King, une seule paire de mains s'occupe de votre coupe : celles d'Hassan. Le salon fait le choix d'un seul barbier plutôt que d'un roulement d'équipe — pour une régularité que vous retrouvez à chaque visite.</p>
+        <p>Chez Barber King, Hassan s'occupe de votre coupe avec la même précision à chaque visite. Florent rejoint l'équipe le 2 août 2026 — vous pourrez choisir votre barbier directement au moment de la réservation.</p>
         <p>Coupe, dégradé, taille de barbe : chaque prestation est pensée pour repartir net, sans avoir à expliquer deux fois ce que vous voulez.</p>
         <a href="#reservation" class="btn btn--primary">Prendre rendez-vous avec Hassan</a>
       </div>
@@ -211,7 +211,7 @@
     <div class="container">
       <p class="eyebrow eyebrow--dark">Réservation</p>
       <h2 class="section__title">Réservez en ligne</h2>
-      <p class="section__lead">Choisissez votre prestation, un créneau réellement disponible dans l'agenda de Hassan, et confirmez. Vous recevez votre confirmation sur WhatsApp.</p>
+      <p class="section__lead">Choisissez votre prestation, votre barbier, et un créneau réellement disponible dans son agenda. Vous recevez votre confirmation sur WhatsApp.</p>
 
       <div class="booking" id="bookingWidget" data-state="loading">
 
@@ -225,15 +225,23 @@
 
         <div class="booking__step">
           <span class="booking__num">2</span>
-          <h3>Date et heure</h3>
-          <label class="field-label" for="bookingDate">Choisissez une date</label>
-          <input type="date" id="bookingDate" class="field" disabled>
-          <div class="booking__options" id="slotsOptions" role="radiogroup" aria-label="Choix du créneau"></div>
-          <p class="booking__hint" id="slotsMessage">Sélectionnez d'abord une prestation.</p>
+          <h3>Le barbier</h3>
+          <div class="booking__options" id="barberOptions" role="radiogroup" aria-label="Choix du barbier">
+            <p class="booking__loading">Chargement…</p>
+          </div>
         </div>
 
         <div class="booking__step">
           <span class="booking__num">3</span>
+          <h3>Date et heure</h3>
+          <label class="field-label" for="bookingDate">Choisissez une date</label>
+          <input type="date" id="bookingDate" class="field" disabled>
+          <div class="booking__options" id="slotsOptions" role="radiogroup" aria-label="Choix du créneau"></div>
+          <p class="booking__hint" id="slotsMessage">Sélectionnez d'abord une prestation et un barbier.</p>
+        </div>
+
+        <div class="booking__step">
+          <span class="booking__num">4</span>
           <h3>Vos coordonnées</h3>
           <label class="field-label" for="clientName">Prénom et nom</label>
           <input type="text" id="clientName" class="field" placeholder="ex. Julien Frésard" autocomplete="name">
@@ -353,7 +361,7 @@
   Réserver
 </a>
 
-<script src="/js/booking.js?v=1" defer></script>
+<script src="/js/booking.js?v=2" defer></script>
 <script src="/js/app.js?v=2" defer></script>
 </body>
 </html>
